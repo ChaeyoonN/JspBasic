@@ -1,6 +1,7 @@
 package com.jsp.board.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 //우리가 DB를 안배워서;;;;
@@ -10,7 +11,7 @@ public class BoardRepository {
 	//외부에서 이 리스트에 직접 접근하지 못하게 하겠습니다.
 	private static final List<BoardVO> boardList = new ArrayList<>();
 	
-	//싱글톤 
+	//싱글톤 : 객체 하나만 생성되게 하기 위해
 	private BoardRepository() {}
 	
 	private static BoardRepository repository = new BoardRepository();
@@ -28,5 +29,38 @@ public class BoardRepository {
 	public List<BoardVO> getList(){
 		return boardList;
 	}
+	
+	//글번호를 가지고 특정 게시물 객체를 리턴하는 메서드
+	public BoardVO getContent(int bId) {
+		return boardList.get(bId-1); //get(인덱스): 인덱스의 위치에 있는 객체를 리턴
+	}
+	
+	//객체를 수정하는 메서드
+	public void update(BoardVO vo, int bId) {
+		boardList.set(bId-1, vo);
+	}
+	
+	//객체를 삭제하는 메서드
+	public void delete(int bId) {
+		boardList.remove(bId-1);
+	}
+	
+	//인자로 받은 키워드를 검색해 키워드가 포함된 객체 리턴하는 메서드
+	public List<BoardVO> search(String keyword) {
+		
+		List<BoardVO> searchList = new ArrayList<>();
+		
+		for(BoardVO vo : boardList) {
+		 if(vo.getWriter().contains(keyword)) {
+			 searchList.add(vo);
+			
+		 }
+		 
+		}
+		
+		return searchList; 
+		
+	}
+	
 	
 }
